@@ -35,4 +35,51 @@ BERT SMILES Autocompletion + API is a project fine-tuning and deploying a BERT m
 
 # Fine-Tuned BERT Model for SMILES Autocompletion
 
-The BERT model was fine-tuned using a dataset of valid SMILES strings. Additional generated SMILES strings were also generated using the RDKit library.
+The BERT model was fine-tuned using a dataset of valid SMILES strings. Additional generated SMILES strings were also generated using the RDKit library. The dataset was preprocessed to create masked language model (MLM) training examples, where a portion of the SMILES strings was masked with a special __[MASK]__ token. The objective of the MLM task is to predict the masked tokens based on the context provided by the surrounding unmasked tokens.
+
+During the fine-tuning process, the model learned the syntactic and semantic patterns within the SMILES strings, enabling it to generate chemically valid suggestions for the masked positions.
+## Algorithm for SMILES Autocompletion with BERT
+![model_explained.png](github_images%2Fmodel_explained.png)
+<p style="text-align: center;">Algorithm for SMILES Autocompletion. </p>
+
+## Advantages of using Model over Database Search
+- **Expanded Chemical Space**: The model can generate exponentially more valid SMILES strings based on learned patterns, enabling exploration of novel and unexplored chemical structures.
+- **Robustness and Flexibility**: The model adapts to different input SMILES strings and generates contextually appropriate suggestions, leading to more accurate and diverse results.
+- **Reduced Dependency on Database Size and Quality**: By leveraging the model's learning capabilities, dependency on databases is minimized, making the autocompletion process more efficient and scalable.
+
+
+# BERT SMILES Autocompletion API
+## Installation
+To set up and run the BERT SMILES Autocompletion API, follow these steps:
+
+1.  Clone the repository:
+    ```
+    $ git clone https://github.com/alpayariyak/BERT-SMILES-Autocompletion-API.git 
+    $ cd BERT-SMILES-Autocompletion-API
+    ```
+2. Install the required packages:
+    ```
+    $ pip install -r requirements.txt
+    ```
+3. Run the Flask app:
+    ```
+    $ python autocompletionAPI.py
+    ```
+The API will be accessible at http://localhost:5000.
+
+## Usage
+### Endpoints
+>**/autocomplete**: autocompletes a given SMILES string using the fine-tuned BERT model, the database search, or both.
+
+### Query Parameters
+>**smiles**: The SMILES string to autocomplete. (required)
+
+> **n_max_suggestions**: The maximum number of suggestions to return (default: 5).
+
+> **use_model**: Set to true to use the BERT model for autocompletion (default: true).
+
+> **use_database**: Set to true to use the database search for autocompletion (default: true).
+
+> **max_search_length**: The maximum depth to search when using the BERT model (default: 10).
+
+
